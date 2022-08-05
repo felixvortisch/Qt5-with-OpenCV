@@ -6,6 +6,8 @@
 #include <QImage>
 #include <QPainter>
 #include <QDebug>
+#include <string>
+
 
 
 #include <opencv2/core.hpp>
@@ -16,6 +18,7 @@
 
 
 using namespace cv;
+using namespace std;
 
 class Calibrate : public QQuickPaintedItem
 {Q_OBJECT
@@ -36,6 +39,8 @@ private:
     cv::Matx33f m_K; //instinsic
     cv::Vec<float, 5> m_k; // distortion
 
+
+
 public:
     Calibrate(QQuickItem *parent = 0);
     void paint(QPainter *painter);
@@ -51,6 +56,7 @@ public:
     void calibrateImage();
     Q_INVOKABLE void openImage(QString url);
     Q_INVOKABLE void openCalibrationImages(QVariant urls);
+    Q_INVOKABLE void saveCalibrationParameters();
 
 signals:
     void frameChanged();

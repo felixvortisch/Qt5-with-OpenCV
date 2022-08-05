@@ -10,6 +10,7 @@
 #include <opencv2/core/utility.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/aruco.hpp>
 
 using namespace cv;
 
@@ -23,6 +24,14 @@ private:
     QList<Mat> rawFrames;
     std::vector<cv::String> fileNames;
 
+    cv::Size frameSize;
+    cv::Matx33f m_K; //instinsic
+    cv::Vec<float, 5> m_k; // distortion
+
+    std::vector<std::vector<cv::Point2f>>  m_markerCorners;
+
+    int bildIndex;
+
 public:
     Marker(QQuickItem *parent = 0);
     void paint(QPainter *painter);
@@ -32,12 +41,19 @@ public:
     void setFrame(const QImage &value);
     Q_INVOKABLE void openImage(QString url);
     Q_INVOKABLE void openMarkerImages(QVariant urls);
+    Q_INVOKABLE void generateMarkers();
+    Q_INVOKABLE void detectMarkers();
+    Q_INVOKABLE void loadCalibrationParameters();
+    Q_INVOKABLE void indexPlus();
+    Q_INVOKABLE void indexMinus();
+    Q_INVOKABLE void poseEstimation();
 
 signals:
     void frameChanged();
 
 public slots:
     void convert2Qimage();
+    void convert2Qimage(Mat raw);
 
 };
 

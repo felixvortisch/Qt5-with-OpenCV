@@ -44,6 +44,7 @@ Page {
     }
 
     RowLayout{
+        id: firstRow
         anchors.top: imageContainer.bottom
         anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
@@ -51,16 +52,76 @@ Page {
         spacing: width*0.2
 
         Button{
+            id: zBtn
+            text: "Back"
+            Layout.preferredWidth: parent.width*0.3
+            visible: false
+            onClicked: marker.indexMinus()
+        }
+
+        Button{
+            id:wBtn
+            text: "Next"
+            Layout.preferredWidth: parent.width*0.3
+            visible: false
+            onClicked: marker.indexPlus()
+        }
+
+    }
+
+
+    RowLayout{
+        id: secondRow
+        anchors.top: firstRow.bottom
+        anchors.topMargin: 10
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width*0.6
+        spacing: width*0.2
+
+        Button{
             text: "Open Images for Marker detection"
-            Layout.preferredWidth: parent.width*0.4
+            Layout.preferredWidth: parent.width*0.2
             onClicked: markerImageDialog.open()
         }
 
         Button{
+            text: "Generate Markers"
+            Layout.preferredWidth: parent.width*0.2
+            onClicked: marker.generateMarkers()
+        }
+
+        Button{
             text: "Go Back"
-            Layout.preferredWidth: parent.width*0.4
+            Layout.preferredWidth: parent.width*0.2
             onClicked: loader.pop()
         }
+    }
+
+    RowLayout{
+        anchors.top: secondRow.bottom
+        anchors.topMargin: 10
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width*0.6
+        spacing: width*0.2
+
+        Button{
+            text: "Load Calibration Parameters"
+            Layout.preferredWidth: parent.width*0.2
+            onClicked: marker.loadCalibrationParameters()
+        }
+
+        Button{
+            text: "Detect Markers"
+            Layout.preferredWidth: parent.width*0.2
+            onClicked: marker.detectMarkers()
+        }
+
+        Button{
+            text: "Pose Estimation"
+            Layout.preferredWidth: parent.width*0.2
+            onClicked: marker.poseEstimation()
+        }
+
     }
 
     FileDialog{
@@ -72,6 +133,8 @@ Page {
         onAccepted: {
             marker.visible = true;
             marker.openMarkerImages(markerImageDialog.fileUrls);
+            zBtn.visible = true
+            wBtn.visible = true
         }
     }
 

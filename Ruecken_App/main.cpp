@@ -1,4 +1,3 @@
-
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "frame.h"
@@ -15,7 +14,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<Frame>("com.app.frame", 1, 0, "Frame");
     qmlRegisterType<Calibrate>("com.app.calibrate", 1, 0, "Calibrate");
-    qmlRegisterType<Calibrate>("com.app.marker", 1, 0, "Marker");
+    qmlRegisterType<Marker>("com.app.marker", 1, 0, "Marker");
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())

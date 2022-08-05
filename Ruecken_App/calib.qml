@@ -57,6 +57,12 @@ Page {
         }
 
         Button{
+            text: "Safe Calibration Parameters"
+            Layout.preferredWidth: parent.width*0.4
+            onClicked: selectedImages.saveCalibrationParameters()
+        }
+
+        Button{
             text: "Go Back"
             Layout.preferredWidth: parent.width*0.4
             onClicked: loader.pop()

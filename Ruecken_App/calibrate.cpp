@@ -133,6 +133,8 @@ void Calibrate::calibrateImage()
 
         rawCalibImages.append(imgUndistorted);
     }
+    m_K = K;
+    m_k = k;
     setCalibRawFrame(rawCalibImages.at(0));
 }
 
@@ -157,6 +159,23 @@ void Calibrate::openCalibrationImages(QVariant urls)
         qDebug() << fileNames.size();
     }
     calculateCalibParameters();
+}
+
+
+
+void Calibrate::saveCalibrationParameters()
+{
+    cv::FileStorage fs("camera.xml", cv::FileStorage::WRITE);
+
+    fs << "image_width" << frameSize.width;
+    fs << "image_height" << frameSize.height;
+    fs << "camera_matrix" << m_K;
+    fs << "distortion_coefficients" << m_k;
+
+    fs.release();
+
+
+
 }
 
 

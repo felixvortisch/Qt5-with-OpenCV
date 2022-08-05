@@ -41,6 +41,6 @@ HEADERS += \
 #DEPENDPATH += /opt/opencv/include/opencv4/
 
 
-LIBS += -L"/opt/opencv/lib/" -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_calib3d
+LIBS += -L"/opt/opencv/lib/" -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_calib3d -lopencv_aruco
 INCLUDEPATH += /opt/opencv/include/opencv4/
 DEPENDPATH += /opt/opencv/include/opencv4/
