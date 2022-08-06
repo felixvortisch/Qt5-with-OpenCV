@@ -29,6 +29,7 @@ private:
     cv::Vec<float, 5> m_k; // distortion
 
     std::vector<std::vector<cv::Point2f>>  m_markerCorners;
+    std::vector<int> m_markerIds;
 
     int bildIndex;
 
@@ -39,6 +40,7 @@ public:
     Q_INVOKABLE void setRawFrame(const Mat &value);
     QImage getFrame() const;
     void setFrame(const QImage &value);
+    void solve_PnP();
     Q_INVOKABLE void openImage(QString url);
     Q_INVOKABLE void openMarkerImages(QVariant urls);
     Q_INVOKABLE void generateMarkers();
@@ -47,6 +49,7 @@ public:
     Q_INVOKABLE void indexPlus();
     Q_INVOKABLE void indexMinus();
     Q_INVOKABLE void poseEstimation();
+    Q_INVOKABLE void estimateCameraPosition();
 
 signals:
     void frameChanged();

@@ -98,6 +98,7 @@ Page {
     }
 
     RowLayout{
+        id: thirdRow
         anchors.top: secondRow.bottom
         anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
@@ -121,6 +122,23 @@ Page {
             Layout.preferredWidth: parent.width*0.2
             onClicked: marker.poseEstimation()
         }
+
+    }
+
+    RowLayout{
+        anchors.top: thirdRow.bottom
+        anchors.topMargin: 10
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width*0.6
+        spacing: width*0.2
+
+        Button{
+            text: "Estimate Camera Position"
+            Layout.preferredWidth: parent.width*0.2
+            onClicked: marker.estimateCameraPosition()
+        }
+
+
 
     }
 

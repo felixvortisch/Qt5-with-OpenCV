@@ -23,6 +23,38 @@ void Marker::setFrame(const QImage &value)
     emit frameChanged();
 }
 
+void Marker::solve_PnP()
+{
+    std::vector<cv::Point3f> objectPoints;
+    std::vector<cv::Point2f> imagePoints;
+    cv::Mat rvecs, tvecs;
+
+    objectPoints.push_back(cv::Point3f(0.0, 0.0, 0.0));
+    objectPoints.push_back(cv::Point3f(0.1475, 0.234, 0.0));
+    objectPoints.push_back(cv::Point3f(0.1475, 0.0, 0.0));
+    objectPoints.push_back(cv::Point3f(0.0, 0.234, 0.0));
+
+    qDebug() << m_markerCorners.at(0).at(0).x << " " << m_markerCorners.at(0).at(0).y;
+
+    imagePoints.push_back(m_markerCorners.at(3).at(0));
+    imagePoints.push_back(m_markerCorners.at(2).at(0));
+    imagePoints.push_back(m_markerCorners.at(4).at(0));
+    imagePoints.push_back(m_markerCorners.at(1).at(0));
+
+    cv::solvePnP(objectPoints, imagePoints, m_K, m_k, rvecs, tvecs);
+
+
+
+    cv::FileStorage fs("PnP.xml", cv::FileStorage::WRITE);
+
+    fs << "tvecs" << tvecs;
+    fs << "rvecs" << rvecs;
+
+
+
+    fs.release();
+}
+
 void Marker::openImage(QString url)
 {
     url.remove("file://");
@@ -72,7 +104,15 @@ void Marker::detectMarkers()
     cv::aruco::drawDetectedMarkers(outputImage, markerCorners, markerIds);
 
     m_markerCorners = markerCorners;
+    m_markerIds = markerIds;
+    cv::FileStorage fs("markerCorners.xml", cv::FileStorage::WRITE);
 
+    fs << "marker_Corners" << m_markerCorners;
+    fs << "markerIds" << markerIds;
+
+
+
+    fs.release();
 
 
     convert2Qimage(outputImage);
@@ -116,13 +156,13 @@ void Marker::poseEstimation()
 {
     Mat outputImage;
     std::vector<cv::Vec3d> rvecs, tvecs;
-    cv::aruco::estimatePoseSingleMarkers(m_markerCorners, 4.28f, m_K, m_k, rvecs, tvecs);
+    cv::aruco::estimatePoseSingleMarkers(m_markerCorners, 0.0428f, m_K, m_k, rvecs, tvecs);
 
     rawFrames.at(bildIndex).copyTo(outputImage);
     for (int i = 0; i < rvecs.size(); ++i) {
         auto rvec = rvecs[i];
         auto tvec = tvecs[i];
-        cv::drawFrameAxes(outputImage, m_K, m_k, rvec, tvec, 0.2);
+        cv::drawFrameAxes(outputImage, m_K, m_k, rvec, tvec, 0.3);
     }
 
     cv::FileStorage fs("markerCorners.xml", cv::FileStorage::WRITE);
@@ -133,6 +173,11 @@ void Marker::poseEstimation()
 
     fs.release();
     convert2Qimage(outputImage);
+}
+
+void Marker::estimateCameraPosition()
+{
+    solve_PnP();
 }
 
 Marker::Marker(QQuickItem *parent): QQuickPaintedItem(parent)
